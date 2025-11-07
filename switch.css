@@ -1,0 +1,30 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+
+.rectangle {
+    display: flex;
+    position: relative;
+    border: 1px solid black;
+    margin: auto;
+    width: 80px;
+    border-radius: 140px;
+    height: 40px;
+    padding: 6px;
+}
+
+.rectangle.on{
+    border: 1px solid red;
+    justify-content: end;
+    
+}
+
+.circle {
+    position: absolute;
+    background-color: black;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
