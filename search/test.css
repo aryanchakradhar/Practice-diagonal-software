@@ -1,0 +1,39 @@
+
+body{
+    margin: 0px;
+    padding: 0px;
+}
+
+#search{
+    display: flex;
+    justify-content: center;
+    margin-top: 50%;
+    gap: 5px;
+}
+
+#search input{
+    height: 40px;
+    width: 50%;
+    border-radius: 15px;
+    
+}
+
+#search button{
+    height: 40px;
+    width: 10%;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#search button:hover{
+    color: white;
+    background-color: black;
+}
+
+#search button:after{
+    color: tomato;
+    background-color: aliceblue;
+}
+
+
+    
