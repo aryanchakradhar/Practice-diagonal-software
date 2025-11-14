@@ -1,0 +1,18 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Courier New', Courier, monospace;
+
+}
+
+table{
+    border: 1px solid black;
+    border-collapse:collapse;
+    width: 100%;
+  
+}
+
+th, tr, td{
+      border: 1px solid black;
+    
+}
