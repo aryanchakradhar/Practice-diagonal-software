@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.light, .dark{
+    display: flex;
+    border: black 1px solid;
+    height: 32px;
+    width: 65px;
+    border-radius: 20px;
+    position: relative;
+    padding: 3px;
+}
+
+.dark{
+    justify-content: end;
+    background-color: black;
+   
+}
+
+.circle{
+     border: black 1px solid;
+     height: 30px;
+     width: 30px;
+     position: absolute;
+     border-radius: 50%;
+     background-color: white;
+}
+
