@@ -1,8 +1,10 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Form } from "react-router-dom";
 import Counter from "./counter/Counter";
 import FetchData from "./fetchdata/FetchData";
 import Parent from "./propdrilling/Parent";
 import Layout from "./Layout";
+import SubmitForm from "./form/SubmitForm";
+
 
 
 const data = "something useful";
@@ -24,6 +26,10 @@ export const router = createBrowserRouter([
             {
                path: "parent",
                element: <Parent username={username}/>, 
+            },
+            {
+               path: "form",
+               element: <SubmitForm />
             },
 
         ]

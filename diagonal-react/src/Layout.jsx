@@ -48,6 +48,17 @@ export default function Layout() {
             prop
           </button>
         </Link>
+        <Link to="/form">
+          <button
+            style={{
+              border: "solid 1px black",
+              borderRadius: "5px",
+              padding: "10px",
+            }}
+          >
+            form
+          </button>
+        </Link>
 
         <Themebutton />
       </nav>
