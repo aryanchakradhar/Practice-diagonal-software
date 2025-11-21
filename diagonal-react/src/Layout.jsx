@@ -11,6 +11,7 @@ export default function Layout() {
           display: "flex",
           justifyContent: "space-evenly",
           margin: "15px",
+          placeItems: "center",
         }}
       >
         <Link to="/">
