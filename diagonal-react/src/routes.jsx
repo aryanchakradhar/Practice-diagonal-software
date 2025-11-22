@@ -5,9 +5,6 @@ import Parent from "./propdrilling/Parent";
 import Layout from "./Layout";
 import SubmitForm from "./form/SubmitForm";
 import Crud from "./crud/Crud";
-import AddCrud from "./crud/AddCrud";
-import EditCrud from "./crud/EditCrud";
-
 
 
 
@@ -39,19 +36,6 @@ export const router = createBrowserRouter([
                path: "crud",
                element: <Crud />
             },
-            {
-               path: "addcrud",
-               element: <AddCrud/>
-            },
-            {
-               path: "editcrud",
-               element: <EditCrud/>
-            },
-            {
-               path: "editcrud/id",
-               element: <EditCrud/>
-            }
-
-        ]
+         ]
     },
 ])

@@ -20,12 +20,12 @@ export default function DeleteCrud({isOpen,onClose,editData}) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} >
-        <h3>DO you really want to delete this employee details</h3>
+        <h3>Do you really want to delete this employee details?</h3>
         <div className='flex justify-center gap-10 '>
-        <button  className="p-2 m-2 border-1 w-20 rounded-xl bg-red-500 text-black cursor-pointer" onClick={handleDelete}>
+        <button  className="p-2 m-2 border w-20 rounded-xl font-semibold bg-purple-950 text-white hover:bg-purple-900 cursor-pointer" onClick={handleDelete}>
             Delete
         </button>
-        <button onClick={onClose}  className="p-2 m-2 border-1 w-20 rounded-xl cursor-pointer">
+        <button onClick={onClose}  className="p-2 m-2 border w-20 rounded-xl cursor-pointer">
             Close
         </button>
         </div>

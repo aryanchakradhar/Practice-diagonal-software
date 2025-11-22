@@ -10,9 +10,10 @@ export default function Layout() {
         style={{
           display: "flex",
           justifyContent: "space-evenly",
-          margin: "15px",
+          padding: "15px",
           placeItems: "center",
         }}
+        className="bg-white"
       >
         <Link to="/">
           <button
@@ -21,6 +22,7 @@ export default function Layout() {
               borderRadius: "5px",
               padding: "10px",
             }}
+            className="bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 border-black"
           >
             Counter
           </button>
@@ -33,6 +35,7 @@ export default function Layout() {
               borderRadius: "5px",
               padding: "10px",
             }}
+            className="bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 border-black"
           >
             Fetch
           </button>
@@ -44,6 +47,7 @@ export default function Layout() {
               borderRadius: "5px",
               padding: "10px",
             }}
+            className="bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 border-black"
           >
             prop
           </button>
@@ -55,6 +59,7 @@ export default function Layout() {
               borderRadius: "5px",
               padding: "10px",
             }}
+            className="bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 border-black"
           >
             form
           </button>
@@ -66,6 +71,7 @@ export default function Layout() {
               borderRadius: "5px",
               padding: "10px",
             }}
+           className="bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 border-black"
           >
             CRUD
           </button>

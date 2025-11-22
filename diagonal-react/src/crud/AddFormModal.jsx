@@ -26,9 +26,9 @@ export default function FormModal({ isOpen, onClose }) {
   };
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-       <h5>Add Data</h5>
-      <form onSubmit={handleSubmit(addData)}>
-        <label>Name</label>
+       <h5 className="font-bold text-2xl">Add Data</h5>
+      <form onSubmit={handleSubmit(addData)} className="flex flex-col w-full gap-5 place-content-around">
+        <label className="font-semibold">Name</label>
         <input
           {...register("name", {
             required: { value: true, message: "this is required" },
@@ -36,6 +36,7 @@ export default function FormModal({ isOpen, onClose }) {
             minLength: { value: 5, message: "minimum value must be 5" },
           })}
           placeholder="Name"
+           className="h-10 border-1 rounded-xl p-1"
         />
         {errors.name && <p>{errors.name.message}</p>}
 
@@ -47,6 +48,7 @@ export default function FormModal({ isOpen, onClose }) {
             minLength: { value: 5, message: "minimum value must be 5" },
           })}
           placeholder="Address"
+           className="h-10 border-1 rounded-xl p-1"
         />
         {errors.address && <p>{errors.address.message}</p>}
         <label>Gmail</label>
@@ -59,11 +61,12 @@ export default function FormModal({ isOpen, onClose }) {
             },
           })}
           placeholder="Gmail"
+           className="h-10 border-1 rounded-xl p-1"
         />
         {errors.gmail && <p>{errors.gmail.message}</p>}
 
-        <button type="submit" className="border-1  max-w-xs">
-          submit
+        <button type="submit" className="border p-3 rounded-xl cursor-pointer font-semibold bg-purple-950 text-white hover:bg-purple-900">
+          Submit
         </button>
       </form>
     </Modal>
