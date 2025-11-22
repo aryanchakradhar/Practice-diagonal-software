@@ -59,6 +59,17 @@ export default function Layout() {
             form
           </button>
         </Link>
+        <Link to="/crud">
+          <button
+            style={{
+              border: "solid 1px black",
+              borderRadius: "5px",
+              padding: "10px",
+            }}
+          >
+            CRUD
+          </button>
+        </Link>
 
         <Themebutton />
       </nav>
