@@ -13,10 +13,13 @@ export default function Crud() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editData, setEditData] = useState({});
   const [isdeleteOpen, setIsDeleteOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
+    try {
         const response = await fetch(`${BASE_URL}/users`);
         const data = await response.json();
         console.log(data);
@@ -84,16 +87,18 @@ export default function Crud() {
           );
         })}
       </table>
-      <FormModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <FormModal isOpen={isOpen} onClose={() => setIsOpen(false)} setLoading={setLoading} loading = {loading} />
       <EditCrud
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         editData={editData}
+        setLoading={setLoading} loading={loading}
       />
       <DeleteCrud
         isOpen={isdeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         editData={editData}
+        setLoading={setLoading} loading={loading}
       />
     </>
   );

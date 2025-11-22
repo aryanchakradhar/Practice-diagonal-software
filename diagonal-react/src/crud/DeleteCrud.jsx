@@ -2,10 +2,9 @@ import React from 'react'
 import Modal from './Modal'
 import { BASE_URL } from '../form/URL'
 
-export default function DeleteCrud({isOpen,onClose,editData}) {
-    console.log("iafdfask", isOpen)
-
+export default function DeleteCrud({isOpen,onClose,editData, setLoading, loading}) {
     const handleDelete = async () => {
+        setLoading(true);
         try{
             const response = await fetch (`${BASE_URL}/users/${editData.id}`,{
                 method: "DELETE",
@@ -15,6 +14,8 @@ export default function DeleteCrud({isOpen,onClose,editData}) {
             onClose();
             }catch(error){
                 console.log(error);
+            }finally{
+                setLoading(false);
             }
     }
 
@@ -22,7 +23,7 @@ export default function DeleteCrud({isOpen,onClose,editData}) {
     <Modal isOpen={isOpen} onClose={onClose} >
         <h3>Do you really want to delete this employee details?</h3>
         <div className='flex justify-center gap-10 '>
-        <button  className="p-2 m-2 border w-20 rounded-xl font-semibold bg-purple-950 text-white hover:bg-purple-900 cursor-pointer" onClick={handleDelete}>
+        <button  className="p-2 m-2 border w-20 rounded-xl font-semibold bg-purple-950 text-white hover:bg-purple-900 cursor-pointer" onClick={handleDelete} disabled={loading}>
             Delete
         </button>
         <button onClick={onClose}  className="p-2 m-2 border w-20 rounded-xl cursor-pointer">

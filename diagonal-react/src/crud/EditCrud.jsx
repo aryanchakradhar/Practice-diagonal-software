@@ -1,9 +1,9 @@
 import { BASE_URL } from "../form/URL";
 import { useForm } from "react-hook-form";
 import Modal from "./Modal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export default function EditCrud({ isOpen, onClose, editData }) {
+export default function EditCrud({ isOpen, onClose, editData, loading, setLoading }) {
   const {
     register,
     handleSubmit,
@@ -12,6 +12,7 @@ export default function EditCrud({ isOpen, onClose, editData }) {
   } = useForm();
 
   const updateemp = async (data) => {
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/users/${editData.id}`, {
         method: "PUT",
@@ -20,17 +21,21 @@ export default function EditCrud({ isOpen, onClose, editData }) {
         },
         body: JSON.stringify(data),
       });
-      const result = response.json();
+    
+      const result = await response.json();
       console.log(result);
+      
       reset({
         name: data.name,
         address: data.address,
         gmail: data.gmail,
       });
-
+     
       onClose();
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -41,6 +46,8 @@ export default function EditCrud({ isOpen, onClose, editData }) {
       gmail: editData.gmail,
     });
   }, [reset, editData]);
+
+  console.log("edit",loading)
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -85,12 +92,14 @@ export default function EditCrud({ isOpen, onClose, editData }) {
           className="h-10 border-1 rounded-xl p-1"
         />
         {errors.gmail && <p>{errors.gmail.message}</p>}
-
+          
         <button
           type="submit"
           className="border p-3 rounded-xl cursor-pointer font-semibold bg-purple-950 text-white hover:bg-purple-900"
+          disabled={loading}
+          
         >
-          Submit
+         submit
         </button>
       </form>
     </Modal>

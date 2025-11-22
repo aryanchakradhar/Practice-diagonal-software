@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { BASE_URL } from "../form/URL";
 import Modal from "./Modal";
 
-export default function FormModal({ isOpen, onClose }) {
+export default function FormModal({ isOpen, onClose, loading, setLoading }) {
   const {
     register,
     handleSubmit,
@@ -10,6 +10,7 @@ export default function FormModal({ isOpen, onClose }) {
   } = useForm();
 
   const addData = async (data) => {
+   setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/users`, {
         method: "POST",
@@ -20,8 +21,12 @@ export default function FormModal({ isOpen, onClose }) {
       });
       const data2 = await response.json();
       console.log(data2);
+       
+          onClose();
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoading(false);
     }
   };
   return (
@@ -36,7 +41,7 @@ export default function FormModal({ isOpen, onClose }) {
             minLength: { value: 5, message: "minimum value must be 5" },
           })}
           placeholder="Name"
-           className="h-10 border-1 rounded-xl p-1"
+           className="h-10 border rounded-xl p-1"
         />
         {errors.name && <p>{errors.name.message}</p>}
 
@@ -48,7 +53,7 @@ export default function FormModal({ isOpen, onClose }) {
             minLength: { value: 5, message: "minimum value must be 5" },
           })}
           placeholder="Address"
-           className="h-10 border-1 rounded-xl p-1"
+           className="h-10 border rounded-xl p-1"
         />
         {errors.address && <p>{errors.address.message}</p>}
         <label>Gmail</label>
@@ -61,11 +66,12 @@ export default function FormModal({ isOpen, onClose }) {
             },
           })}
           placeholder="Gmail"
-           className="h-10 border-1 rounded-xl p-1"
+           className="h-10 border rounded-xl p-1"
         />
         {errors.gmail && <p>{errors.gmail.message}</p>}
 
-        <button type="submit" className="border p-3 rounded-xl cursor-pointer font-semibold bg-purple-950 text-white hover:bg-purple-900">
+        <button type="submit" className="border p-3 rounded-xl cursor-pointer font-semibold bg-purple-950 text-white hover:bg-purple-900"
+        disabled={loading}>
           Submit
         </button>
       </form>
