@@ -1,74 +1,75 @@
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "./URL";
+import { useForm } from "react-hook-form";
 
 export default function SubmitForm() {
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [gmail, setGmail] = useState("");
-  const [dob, setDob] = useState("");
-  const [avataar, setAvataar] = useState("");
-
-  const handleSubmit= async(e) => {
-    e.preventDefault();  
-
+  const {register, handleSubmit, formState: { errors}} = useForm({});
+  
+  const onSubmit = async(data) => {    
     try {
         const response = await fetch(`${BASE_URL}/users`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({name,address,gmail,dob,avataar}),
+          body: JSON.stringify(data),
         });
-        const data = await response.json();
-        console.log(data);
+        const data2 = await response.json();
+        console.log(data2);
       } catch (error) {
         console.log(error);
       }
   }
 
+  console.log(errors)
+
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col items-center min-w-2xs justify-between h-100 "
     >
       <label>Name:</label>
-      <input
-        type="text"
-        className="border-1"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      ></input>
+      <input {
+        ...register("name", {
+          required: true
+       })} placeholder = "name"
+       />
+       {errors.name && <p>Name is required</p>}
       <label>Address:</label>
-      <input
-        type="text"
-        className="border-1"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-      ></input>
+      <input {
+        ...register("address", {
+          required:true
+        })} placeholder="address"
+        
+      />
+      {errors.address && <p>Address is required</p>}
 
       <label>Gmail:</label>
-      <input
-        type="text"
-        className="border-1"
-        value={gmail}
-        onChange={(e) => setGmail(e.target.value)}
-      ></input>
+      <input {
+        ...register("gmail", {  
+          required: {
+            value: true ,
+            message: "Gmail is required"
+          },   
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: "invalid email address"
+          }
+        })
+      } placeholder = "gmail" 
+      />
+{errors.gmail?.message && <p>{errors.gmail?.message}</p>}
+{errors.gmail && <p>{errors.gmail.required?.message}</p>}
+
 
       <label>DOB:</label>
-      <input
-        type="text"
-        className="border-1"
-        value={dob}
-        onChange={(e) => setDob(e.target.value)}
-      ></input>
-
-      <label>Avataar:</label>
-      <input
-        type="text"
-        className="border-1"
-        value={avataar}
-        onChange={(e) => setAvataar(e.target.value)}
-      ></input>
+      <input {
+        ...register("dob", {
+          required:true
+        })
+      } placeholder="DOB"
+      />
+      {errors.dob && <p>Your date of birth is required</p>}
       <button type="submit" className="border-1  max-w-xs">
         submit
       </button>
