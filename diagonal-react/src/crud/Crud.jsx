@@ -17,12 +17,11 @@ export default function Crud() {
   const [isdeleteOpen, setIsDeleteOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     const fetchData = async () => {
-    try {
+      try {
         const response = await axios.get(`${BASE_URL}/users`);
         setInfo(response.data);
       } catch (error) {
@@ -32,9 +31,12 @@ export default function Crud() {
     fetchData();
   }, []);
 
-    const totalPages = Math.ceil (info.length / itemsPerPage);
+  const totalPages = Math.ceil(info.length / itemsPerPage);
 
-    const currentData = info.slice((currentPage-1) * itemsPerPage, currentPage *itemsPerPage)
+  const currentData = info.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <>
@@ -48,21 +50,38 @@ export default function Crud() {
           Add Employee
         </button>
       </div>
+      <div className="flex mb-1">
+        <label>
+          Show data:
+          <select
+            value={itemsPerPage}
+            onChange={(e) => setItemsPerPage(e.target.value)}
+            className="border ml-1 rounded-lg"
+          >
+            currentData
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={75}>75</option>
+            <option value={100}>100</option>
+          </select>
+        </label>
+      </div>
       <table className=" border border-collapse w-full">
-            <tr  className="sticky top-0 border bg-purple-900 text-white text-l ">
-            <th  className=" border">Name</th>
-            <th className=" border">Address</th>
-            <th className=" border">Gmail</th>
+        <tr className="sticky top-0 border bg-purple-900 text-white text-l ">
+          <th className=" border">Name</th>
+          <th className=" border">Address</th>
+          <th className=" border">Gmail</th>
 
-            <th>Action</th>
-          </tr>
-      
+          <th>Action</th>
+        </tr>
+
         {currentData.map((item) => {
           return (
             <tr className="border w-100 odd:bg-gray-300 even:bg-white">
-              <td className=" border" >{item.name}</td>
-              <td className=" border" >{item.address}</td>
-              <td className=" border" >{item.gmail}</td>
+              <td className=" border">{item.name}</td>
+              <td className=" border">{item.address}</td>
+              <td className=" border">{item.gmail}</td>
               <td className="flex justify-center">
                 <button
                   onClick={() => {
@@ -82,32 +101,38 @@ export default function Crud() {
                   }}
                   className="flex place-content-around items-center p-2 m-2 border w-20 rounded-xl even:bg-white hover:bg-black hover:text-white cursor-pointer"
                 >
-                  Delete <FaTrash  />
+                  Delete <FaTrash />
                 </button>
               </td>
             </tr>
           );
         })}
-      
       </table>
-          <Pagination 
-        totalPages ={totalPages}
-        currentPage = {currentPage}
-        onPageChange = {setCurrentPage} />
+      <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
 
-
-      <FormModal isOpen={isOpen} onClose={() => setIsOpen(false)} setLoading={setLoading} loading = {loading} />
+      <FormModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        setLoading={setLoading}
+        loading={loading}
+      />
       <EditCrud
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         editData={editData}
-        setLoading={setLoading} loading={loading}
+        setLoading={setLoading}
+        loading={loading}
       />
       <DeleteCrud
         isOpen={isdeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         editData={editData}
-        setLoading={setLoading} loading={loading}
+        setLoading={setLoading}
+        loading={loading}
       />
     </>
   );
