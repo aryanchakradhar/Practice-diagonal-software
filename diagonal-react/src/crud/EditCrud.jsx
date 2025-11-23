@@ -1,7 +1,8 @@
 import { BASE_URL } from "../form/URL";
 import { useForm } from "react-hook-form";
 import Modal from "./Modal";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function EditCrud({ isOpen, onClose, editData, loading, setLoading }) {
   const {
@@ -14,16 +15,12 @@ export default function EditCrud({ isOpen, onClose, editData, loading, setLoadin
   const updateemp = async (data) => {
     setLoading(true);
     try {
-      const response = await fetch(`${BASE_URL}/users/${editData.id}`, {
-        method: "PUT",
+      const response = await axios.put(`${BASE_URL}/users/${editData.id}`, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
       });
-    
-      const result = await response.json();
-      console.log(result);
+      console.log(response);
       
       reset({
         name: data.name,

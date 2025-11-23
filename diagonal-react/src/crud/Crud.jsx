@@ -6,6 +6,7 @@ import EditCrud from "./EditCrud";
 import DeleteCrud from "./DeleteCrud";
 import { FaBrush } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
+import axios from "axios";
 
 export default function Crud() {
   const [info, setInfo] = useState([]);
@@ -20,10 +21,8 @@ export default function Crud() {
   useEffect(() => {
     const fetchData = async () => {
     try {
-        const response = await fetch(`${BASE_URL}/users`);
-        const data = await response.json();
-        console.log(data);
-        setInfo(data);
+        const response = await axios.get(`${BASE_URL}/users`);
+        setInfo(response.data);
       } catch (error) {
         console.log(error);
       }

@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { BASE_URL } from "../form/URL";
 import Modal from "./Modal";
+import axios from "axios";
+
 
 export default function FormModal({ isOpen, onClose, loading, setLoading }) {
   const {
@@ -9,20 +11,16 @@ export default function FormModal({ isOpen, onClose, loading, setLoading }) {
     formState: { errors },
   } = useForm();
 
-  const addData = async (data) => {
+ const addData = async () => {
    setLoading(true);
     try {
-      const response = await fetch(`${BASE_URL}/users`, {
-        method: "POST",
+      const response = await axios.post(`${BASE_URL}/users`, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
       });
-      const data2 = await response.json();
-      console.log(data2);
-       
-          onClose();
+      console.log(response.data);
+      onClose();
     } catch (error) {
       console.log(error);
     }finally{

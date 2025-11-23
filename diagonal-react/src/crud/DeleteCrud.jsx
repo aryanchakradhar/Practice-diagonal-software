@@ -1,16 +1,15 @@
 import React from 'react'
 import Modal from './Modal'
 import { BASE_URL } from '../form/URL'
+import axios from 'axios';
 
 export default function DeleteCrud({isOpen,onClose,editData, setLoading, loading}) {
     const handleDelete = async () => {
         setLoading(true);
         try{
-            const response = await fetch (`${BASE_URL}/users/${editData.id}`,{
-                method: "DELETE",
+            const response = await axios.delete(`${BASE_URL}/users/${editData.id}`,{
         });
-           const result = response.json();
-           console.log(result); 
+           console.log(response); 
             onClose();
             }catch(error){
                 console.log(error);
