@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../form/URL";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 import FormModal from "./AddFormModal";
 import EditCrud from "./EditCrud";
 import DeleteCrud from "./DeleteCrud";
 import { FaBrush } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import axios from "axios";
+import { Pagination } from "./Pagination";
 
 export default function Crud() {
   const [info, setInfo] = useState([]);
@@ -15,7 +16,8 @@ export default function Crud() {
   const [editData, setEditData] = useState({});
   const [isdeleteOpen, setIsDeleteOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
 
   useEffect(() => {
@@ -30,9 +32,10 @@ export default function Crud() {
     fetchData();
   }, []);
 
-  console.log(info);
+    const totalPages = Math.ceil (info.length / itemsPerPage);
 
-  console.log({ editData });
+    const currentData = info.slice((currentPage-1) * itemsPerPage, currentPage *itemsPerPage)
+
   return (
     <>
       <div className="flex m-3 justify-around items-center">
@@ -54,9 +57,9 @@ export default function Crud() {
             <th>Action</th>
           </tr>
       
-        {info.map((item) => {
+        {currentData.map((item) => {
           return (
-            <tr className="border-1 w-100 odd:bg-gray-300 even:bg-white">
+            <tr className="border w-100 odd:bg-gray-300 even:bg-white">
               <td className=" border" >{item.name}</td>
               <td className=" border" >{item.address}</td>
               <td className=" border" >{item.gmail}</td>
@@ -85,7 +88,14 @@ export default function Crud() {
             </tr>
           );
         })}
+      
       </table>
+          <Pagination 
+        totalPages ={totalPages}
+        currentPage = {currentPage}
+        onPageChange = {setCurrentPage} />
+
+
       <FormModal isOpen={isOpen} onClose={() => setIsOpen(false)} setLoading={setLoading} loading = {loading} />
       <EditCrud
         isOpen={isEditOpen}
