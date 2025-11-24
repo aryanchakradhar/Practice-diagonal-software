@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { BASE_URL } from "../form/URL";
 import Modal from "./Modal";
 import axios from "axios";
+import { data } from "react-router-dom";
 
 
 export default function FormModal({ isOpen, onClose, loading, setLoading }) {
@@ -11,10 +12,10 @@ export default function FormModal({ isOpen, onClose, loading, setLoading }) {
     formState: { errors },
   } = useForm();
 
- const addData = async () => {
+ const addData = async (data) => {
    setLoading(true);
     try {
-      const response = await axios.post(`${BASE_URL}/users`, {
+      const response = await axios.post(`${BASE_URL}/users`, data, {
         headers: {
           "Content-Type": "application/json",
         },
