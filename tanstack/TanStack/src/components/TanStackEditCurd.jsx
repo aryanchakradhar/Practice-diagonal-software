@@ -2,9 +2,9 @@ import { BASE_URL } from "../form/url";
 import { useForm } from "react-hook-form";
 import Modal from "./Modal";
 import { useEffect } from "react";
-import axios from "axios";
+import { useUpdateUserList } from "../hooks";
 
-export default function TanStackEditCrud({ isOpen, onClose, editData, loading, setLoading }) {
+export default function TanStackEditCrud({ isOpen, onClose, editData }) {
   const {
     register,
     handleSubmit,
@@ -12,28 +12,20 @@ export default function TanStackEditCrud({ isOpen, onClose, editData, loading, s
     formState: { errors },
   } = useForm();
 
-  const updateemp = async (data) => {
-    setLoading(true);
-    try {
-      const response = await axios.put(`${BASE_URL}/users/${editData.id}`, {
-        headers: {
-          "Content-Type": "application/json",
+  const updateMutation = useUpdateUserList();
+  const updateemp = (data) => {
+    updateMutation.mutate(
+      { id: editData.id, data },
+      {
+        onSuccess: () => {
+          alert("success");
+          onClose();
         },
-      });
-      console.log(response);
-      
-      reset({
-        name: data.name,
-        address: data.address,
-        gmail: data.gmail,
-      });
-     
-      onClose();
-    } catch (error) {
-      console.log(error);
-    }finally{
-      setLoading(false);
-    }
+        onError: () => {
+          alert("failed");
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -43,8 +35,6 @@ export default function TanStackEditCrud({ isOpen, onClose, editData, loading, s
       gmail: editData.gmail,
     });
   }, [reset, editData]);
-
-  console.log("edit",loading)
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -89,14 +79,13 @@ export default function TanStackEditCrud({ isOpen, onClose, editData, loading, s
           className="h-10 border-1 rounded-xl p-1"
         />
         {errors.gmail && <p>{errors.gmail.message}</p>}
-          
+
         <button
           type="submit"
           className="border p-3 rounded-xl cursor-pointer font-semibold bg-purple-950 text-white hover:bg-purple-900"
-          disabled={loading}
-          
+          disabled={updateemp.isPending}
         >
-         submit
+          submit
         </button>
       </form>
     </Modal>

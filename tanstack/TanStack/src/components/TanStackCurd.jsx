@@ -73,7 +73,6 @@ export default function TanStackCrud() {
                 <button
                   onClick={() => {
                     setEditData(item);
-
                     setIsEditOpen(true);
                   }}
                   className="flex place-content-around items-center odd:bg-white hover:bg-black hover:text-white p-2 m-2 border w-20 rounded-xl cursor-pointer"
@@ -97,12 +96,12 @@ export default function TanStackCrud() {
 
       <TanStackAddCurd isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <TanStackEditCrud
-        isEdited={isEditOpen}
+        isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         editData={editData}
       />
       <TanStackDeleteCrud
-        isdeleteOpen={isdeleteOpen}
+        isOpen={isdeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         editData={editData}
       />
