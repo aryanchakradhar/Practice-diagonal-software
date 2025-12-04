@@ -36,6 +36,7 @@ export const router = createBrowserRouter([
                path: "crud",
                element: <Crud />
             },
+         
          ]
     },
 ])

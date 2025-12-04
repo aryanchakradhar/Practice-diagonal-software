@@ -1,52 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { BASE_URL } from "../form/URL";
-import FormModal from "./AddFormModal";
-import EditCrud from "./EditCrud";
-import DeleteCrud from "./DeleteCrud";
+import React, { useState } from "react";
 import { FaBrush } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
-import axios from "axios";
-import { Pagination } from "./Pagination";
 import { FaSearch } from "react-icons/fa";
+import TanStackAddCurd from "./TanStackAddCurd";
+import TanStackEditCrud from "./TanStackEditCurd";
+import TanStackDeleteCrud from "./TanStackDeleteCurd";
+import { useGetUserList } from "../hooks";
 
-export default function Crud() {
-  const [info, setInfo] = useState([]);
+export default function TanStackCrud() {
+  const { data, isLoading } = useGetUserList();
   const [isOpen, setIsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editData, setEditData] = useState({});
   const [isdeleteOpen, setIsDeleteOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [keyword, setKeyword] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/users`);
-        setInfo(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const filterData = info?.filter((item) =>
-    item.name.toLowerCase().includes(keyword.toLowerCase().trim())
-  );
-
-  const totalPages = Math.ceil(filterData.length / itemsPerPage);
-
-  const currentData = filterData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handleChange = (value) => {
-    setKeyword(value);
-    setCurrentPage(1);
-  };
+  if (isLoading) return <>Loading ....</>;
+  if (!data) return <>No Data</>;
 
   return (
     <>
@@ -54,8 +23,8 @@ export default function Crud() {
         <h1 className="text-2xl font-bold">Manage Employees</h1>
 
         <button
+          className=" bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 p-3 border rounded-2xl cursor-pointer"
           onClick={() => setIsOpen(true)}
-          className=" bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 p-3 border rounded-2xl cursor"
         >
           Add Employee
         </button>
@@ -63,11 +32,7 @@ export default function Crud() {
       <div className="flex mb-1 p-2 justify-between">
         <label>
           Show data:
-          <select
-            value={itemsPerPage}
-            onChange={(e) => setItemsPerPage(e.target.value)}
-            className="border ml-1 rounded-lg"
-          >
+          <select className="border ml-1 rounded-lg">
             currentData
             <option value={10}>10</option>
             <option value={25}>25</option>
@@ -78,8 +43,6 @@ export default function Crud() {
         </label>
         <input
           type="text"
-          value={keyword}
-          onChange={(e) => handleChange(e.target.value)}
           placeholder="search"
           className="border rounded-lg p-1 pr-8 w-100 relative"
         />
@@ -94,7 +57,7 @@ export default function Crud() {
           <th>Action</th>
         </tr>
 
-        {currentData.map((item) => {
+        {data.map((item) => {
           return (
             <tr className="border w-100 odd:bg-gray-300 even:bg-white">
               <td className=" border  w-1/4 truncate overflow-hidden whitespace-nowrap">
@@ -109,7 +72,6 @@ export default function Crud() {
               <td className="flex justify-center">
                 <button
                   onClick={() => {
-                    console.log(item);
                     setEditData(item);
 
                     setIsEditOpen(true);
@@ -132,31 +94,17 @@ export default function Crud() {
           );
         })}
       </table>
-      <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
 
-      <FormModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        setLoading={setLoading}
-        loading={loading}
-      />
-      <EditCrud
-        isOpen={isEditOpen}
+      <TanStackAddCurd isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <TanStackEditCrud
+        isEdited={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         editData={editData}
-        setLoading={setLoading}
-        loading={loading}
       />
-      <DeleteCrud
-        isOpen={isdeleteOpen}
+      <TanStackDeleteCrud
+        isdeleteOpen={isdeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         editData={editData}
-        setLoading={setLoading}
-        loading={loading}
       />
     </>
   );

@@ -76,7 +76,6 @@ export default function Layout() {
             CRUD
           </button>
         </Link>
-
         <Themebutton />
       </nav>
 
