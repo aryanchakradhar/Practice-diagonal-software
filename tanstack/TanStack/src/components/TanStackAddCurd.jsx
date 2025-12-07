@@ -2,17 +2,33 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Modal from "./Modal";
 import { useCreateuser } from "../hooks";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function TanStackAddCurd({ isOpen, onClose }) {
+  const schema = z.object({
+    name: z
+      .string()
+      .max(150, "Maximum character can be 150")
+      .min(5, "Minimum 5 characters")
+      .trim(),
+    address: z
+      .string()
+      .max(150, "Maximum character can be 150")
+      .min(5, "Minimum 5 characters")
+      .trim(),
+    gmail: z.email("Invalid gmail"),
+    avatar: z.any(),
+  });
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: zodResolver(schema) });
 
   const [preview, setPreview] = useState(null);
-  const createMutation = useCreateuser();
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -22,7 +38,16 @@ export default function TanStackAddCurd({ isOpen, onClose }) {
       reader.onerror = (error) => reject(error);
     });
 
+  const createMutation = useCreateuser();
   const Submit = (data) => {
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      const formatted = result.error;
+      console.log(formatted);
+    } else {
+      alert("Success!");
+      result.data;
+    }
     createMutation.mutate(data, {
       onSuccess: () => {
         alert("success");
@@ -42,12 +67,7 @@ export default function TanStackAddCurd({ isOpen, onClose }) {
       <form onSubmit={handleSubmit(Submit)} className="flex flex-col gap-4">
         <label className="font-semibold">Name</label>
         <input
-          {...register("name", {
-            required: "This is required",
-            maxLength: { value: 150, message: "Maximum 150 characters" },
-            minLength: { value: 5, message: "Minimum 5 characters" },
-            setValueAs: (value) => value.trim(),
-          })}
+          {...register("name")}
           placeholder="Name"
           className="h-10 border rounded-xl p-2"
         />
@@ -55,12 +75,7 @@ export default function TanStackAddCurd({ isOpen, onClose }) {
 
         <label className="font-semibold">Address</label>
         <input
-          {...register("address", {
-            required: "This is required",
-            maxLength: { value: 150, message: "Maximum 150 characters" },
-            minLength: { value: 5, message: "Minimum 5 characters" },
-            setValueAs: (value) => value.trim(),
-          })}
+          {...register("address")}
           placeholder="Address"
           className="h-10 border rounded-xl p-2"
         />
@@ -68,11 +83,7 @@ export default function TanStackAddCurd({ isOpen, onClose }) {
 
         <label className="font-semibold">Gmail</label>
         <input
-          {...register("gmail", {
-            required: "This is required",
-            pattern: { value: /\S+@\S+\.\S+/, message: "Invalid email format" },
-            setValueAs: (value) => value.trim(),
-          })}
+          {...register("gmail")}
           placeholder="Gmail"
           className="h-10 border rounded-xl p-2"
         />
@@ -81,7 +92,7 @@ export default function TanStackAddCurd({ isOpen, onClose }) {
         <label className="font-semibold">Avatar</label>
         <input
           type="file"
-          {...register("avatar", { required: "This is required" })}
+          {...register("avatar")}
           className="h-10 border rounded-xl p-1"
           onChange={async (e) => {
             const file = e.target.files[0];

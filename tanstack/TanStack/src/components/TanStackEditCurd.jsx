@@ -3,17 +3,42 @@ import { useForm } from "react-hook-form";
 import Modal from "./Modal";
 import { useEffect } from "react";
 import { useUpdateUserList } from "../hooks";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function TanStackEditCrud({ isOpen, onClose, editData }) {
+  const schema = z.object({
+    name: z
+      .string()
+      .max(150, "Maximum character can be 150")
+      .min(5, "Minimum 5 characters")
+      .trim(),
+    address: z
+      .string()
+      .max(150, "Maximum character can be 150")
+      .min(5, "Minimum 5 characters")
+      .trim(),
+    gmail: z.email("Invalid gmail"),
+    avatar: z.any(),
+  });
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: zodResolver(schema) });
 
   const updateMutation = useUpdateUserList();
   const updateemp = (data) => {
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      const formatted = result.error;
+      console.log(formatted);
+    } else {
+      alert("Success!");
+      result.data;
+    }
     updateMutation.mutate(
       { id: editData.id, data },
       {
@@ -45,38 +70,24 @@ export default function TanStackEditCrud({ isOpen, onClose, editData }) {
       >
         <label className="font-semibold">Name</label>
         <input
-          {...register("name", {
-            required: { value: true, message: "this is required" },
-            maxLength: { value: 150, message: "maximum value can 150" },
-            minLength: { value: 5, message: "minimum value must be 5" },
-          })}
+          {...register("name")}
           placeholder="Name"
-          className="h-10 border-1 rounded-xl p-1"
+          className="h-10 border rounded-xl p"
         />
         {errors.name && <p>{errors.name.message}</p>}
 
         <label className="font-semibold">Address</label>
         <input
-          {...register("address", {
-            required: { value: true, message: "this is required" },
-            maxLength: { value: 150, message: "maximum value can 150" },
-            minLength: { value: 5, message: "minimum value must be 5" },
-          })}
+          {...register("address")}
           placeholder="Address"
-          className="h-10 border-1 rounded-xl p-1"
+          className="h-10 border rounded-xl p-1"
         />
         {errors.address && <p>{errors.address.message}</p>}
         <label className="font-semibold">Gmail</label>
         <input
-          {...register("gmail", {
-            required: { value: true, message: "this is required" },
-            pattern: {
-              value: /\S+@\S+\.\S+/,
-              message: "Entered value does not match email format",
-            },
-          })}
+          {...register("gmail")}
           placeholder="Gmail"
-          className="h-10 border-1 rounded-xl p-1"
+          className="h-10 border rounded-xl p-1"
         />
         {errors.gmail && <p>{errors.gmail.message}</p>}
 
