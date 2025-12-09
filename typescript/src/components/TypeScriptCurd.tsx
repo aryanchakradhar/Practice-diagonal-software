@@ -1,32 +1,33 @@
 import React, { useState } from "react";
-import { FaBrush } from "react-icons/fa";
-import { FaTrash } from "react-icons/fa";
-import { FaSearch } from "react-icons/fa";
-import TanStackAddCurd from "./TanStackAddCurd";
-import TanStackEditCrud from "./TanStackEditCurd";
-import TanStackDeleteCrud from "./TanStackDeleteCurd";
-import { useGetUserList } from "../hooks";
+import { FaBrush, FaSearch, FaTrash } from "react-icons/fa";
+import { useGetUserList } from "../hook";
+import TypeScriptAddCurd from "./TypeScriptAddCurd";
+import TypeScriptEditCurd from "./TypeScriptEditCurd";
+import TypeScriptDeleteCurd from "./TypeScriptDeleteCurd";
+import type { EditUserData } from "../types";
 
-export default function TanStackCrud() {
+export default function TypeScriptCurd() {
   const { data, isLoading } = useGetUserList();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [editData, setEditData] = useState({});
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [editData, setEditData] = useState<EditUserData>({
+    name: "",
+    address: "",
+    gmail: "",
+    avatar: "",
+  });
   const [isdeleteOpen, setIsDeleteOpen] = useState(false);
 
-  if (isLoading) return <>Loading ....</>;
-  if (!data) return <>No Data</>;
+  if (isLoading) {
+    return <p>loading</p>;
+  }
 
   return (
     <>
       <div className="flex m-3 justify-around items-center">
         <h1 className="text-2xl font-bold">Manage Employees</h1>
-
-        <button
-          className=" bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 p-3 border rounded-2xl cursor-pointer"
-          onClick={() => setIsOpen(true)}
-        >
-          Add Employee
+        <button className=" bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 p-3 border rounded-2xl cursor-pointer">
+          Add Employees
         </button>
       </div>
       <div className="flex mb-1 p-2 justify-between">
@@ -56,8 +57,10 @@ export default function TanStackCrud() {
 
           <th>Action</th>
         </tr>
+      
 
-        {data.map((item) => {
+      {data &&
+        data.map((item) => {
           return (
             <tr className="border w-100 odd:bg-gray-300 even:bg-white">
               <td className=" border  w-1/4 truncate overflow-hidden whitespace-nowrap">
@@ -92,15 +95,14 @@ export default function TanStackCrud() {
             </tr>
           );
         })}
-      </table>
-
-      <TanStackAddCurd isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <TanStackEditCrud
+        </table>
+      <TypeScriptAddCurd isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <TypeScriptEditCurd
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         editData={editData}
       />
-      <TanStackDeleteCrud
+      <TypeScriptDeleteCurd
         isOpen={isdeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         editData={editData}
