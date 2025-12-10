@@ -1,21 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaBrush, FaSearch, FaTrash } from "react-icons/fa";
 import { useGetUserList } from "../hook";
-import TypeScriptAddCurd from "./TypeScriptAddCurd";
-import TypeScriptEditCurd from "./TypeScriptEditCurd";
-import TypeScriptDeleteCurd from "./TypeScriptDeleteCurd";
-import type { EditUserData } from "../types";
+import AddButton from "./AddButton";
+import DeleteButton from "./DeleteButton";
+import EditButton from "./EditButton";
 
 export default function TypeScriptCurd() {
   const { data, isLoading } = useGetUserList();
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [editData, setEditData] = useState<EditUserData>({
-    name: "",
-    address: "",
-    gmail: "",
-    avatar: "",
-  });
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [id, setId] = useState<string>();
   const [isdeleteOpen, setIsDeleteOpen] = useState(false);
 
   if (isLoading) {
@@ -26,7 +20,10 @@ export default function TypeScriptCurd() {
     <>
       <div className="flex m-3 justify-around items-center">
         <h1 className="text-2xl font-bold">Manage Employees</h1>
-        <button className=" bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 p-3 border rounded-2xl cursor-pointer">
+        <button
+          className=" bg-purple-950 text-white  hover:text-gray-200 hover:bg-purple-900 p-3 border rounded-2xl cursor-pointer"
+          onClick={() => setIsOpen(true)}
+        >
           Add Employees
         </button>
       </div>
@@ -57,56 +54,59 @@ export default function TypeScriptCurd() {
 
           <th>Action</th>
         </tr>
-      
 
-      {data &&
-        data.map((item) => {
-          return (
-            <tr className="border w-100 odd:bg-gray-300 even:bg-white">
-              <td className=" border  w-1/4 truncate overflow-hidden whitespace-nowrap">
-                {item.name}
-              </td>
-              <td className=" border w-1/4 truncate overflow-hidden whitespace-nowrap">
-                {item.address}
-              </td>
-              <td className=" border w-1/4 truncate overflow-hidden whitespace-nowrap">
-                {item.gmail}
-              </td>
-              <td className="flex justify-center">
-                <button
-                  onClick={() => {
-                    setEditData(item);
-                    setIsEditOpen(true);
-                  }}
-                  className="flex place-content-around items-center odd:bg-white hover:bg-black hover:text-white p-2 m-2 border w-20 rounded-xl cursor-pointer"
-                >
-                  Edit <FaBrush />
-                </button>
-                <button
-                  onClick={() => {
-                    setEditData(item);
-                    setIsDeleteOpen(true);
-                  }}
-                  className="flex place-content-around items-center p-2 m-2 border w-20 rounded-xl even:bg-white hover:bg-black hover:text-white cursor-pointer"
-                >
-                  Delete <FaTrash />
-                </button>
-              </td>
-            </tr>
-          );
-        })}
-        </table>
-      <TypeScriptAddCurd isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <TypeScriptEditCurd
-        isOpen={isEditOpen}
-        onClose={() => setIsEditOpen(false)}
-        editData={editData}
-      />
-      <TypeScriptDeleteCurd
-        isOpen={isdeleteOpen}
-        onClose={() => setIsDeleteOpen(false)}
-        editData={editData}
-      />
+        {data &&
+          data.map((item) => {
+            return (
+              <tr className="border w-100 odd:bg-gray-300 even:bg-white">
+                <td className=" border  w-1/4 truncate overflow-hidden whitespace-nowrap">
+                  {item.name}
+                </td>
+                <td className=" border w-1/4 truncate overflow-hidden whitespace-nowrap">
+                  {item.address}
+                </td>
+                <td className=" border w-1/4 truncate overflow-hidden whitespace-nowrap">
+                  {item.gmail}
+                </td>
+                <td className="flex justify-center">
+                  <button
+                    onClick={() => {
+                      setId(item.id);
+                      setIsEditOpen(true);
+                    }}
+                    className="flex place-content-around items-center odd:bg-white hover:bg-black hover:text-white p-2 m-2 border w-20 rounded-xl cursor-pointer"
+                  >
+                    Edit <FaBrush />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setId(item.id);
+                      setIsDeleteOpen(true);
+                    }}
+                    className="flex place-content-around items-center p-2 m-2 border w-20 rounded-xl even:bg-white hover:bg-black hover:text-white cursor-pointer"
+                  >
+                    Delete <FaTrash />
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+      </table>
+      <AddButton isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      {id && (
+        <EditButton
+          isOpen={isEditOpen}
+          onClose={() => setIsEditOpen(false)}
+          id={id}
+        />
+      )}
+      {id && (
+        <DeleteButton
+          isOpen={isdeleteOpen}
+          onClose={() => setIsDeleteOpen(false)}
+          id={id}
+        />
+      )}
     </>
   );
 }
