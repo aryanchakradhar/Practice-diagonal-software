@@ -23,3 +23,4 @@ export type UpdateUserParams = {
   data: EditUserData;
   id: string;
 }
+

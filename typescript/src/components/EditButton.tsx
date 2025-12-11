@@ -27,7 +27,7 @@ export default function EditButton({
       .max(150, "Maximum character can be 150")
       .min(5, "Minimum 5 characters")
       .trim(),
-    gmail: z.email("Invalid gmail"),
+    gmail: z.email("Invalid gmail").trim(),
     avatar: z.string(),
   });
 
@@ -40,6 +40,7 @@ export default function EditButton({
   const updateMutation = useUpdateUserList();
 
   const onSubmit = (data:EditUserData) =>{
+    console.log("dasvjasvdjvasd",data)
     const result = schema.safeParse(data);
     if (!result.success) {
       const formatted = result.error;
