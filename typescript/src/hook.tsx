@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createUser, deleteUserList, getUserList, updateUserList } from "./api";
-import type { AddUserData, UpdateUserParams } from "./types";
+import type { AddUserData, UpdateUserParams, User } from "./types";
 import { useState } from "react";
 
 export const useGetUserList = () => {
@@ -11,19 +11,19 @@ export const useGetUserList = () => {
 };
 
 export const useCreateUser = () => {
-  return useMutation<unknown, unknown, AddUserData>({
+  return useMutation<User, Error, AddUserData>({
     mutationFn: (data) => createUser(data),
   });
 };
 
 export const useDeleteUserList = () => {
-  return useMutation({
+  return useMutation<User, Error, User["id"]>({
     mutationFn: (id: string) => deleteUserList(id),
   });
 };
 
 export const useUpdateUserList = () => {
-  return useMutation<unknown, unknown, UpdateUserParams>({
+  return useMutation<User, Error, UpdateUserParams>({
     mutationFn: ({ data, id }) => updateUserList({ data, id }),
   });
 };

@@ -8,7 +8,8 @@ export const getUserList = async () => {
 };
 
 export const createUser = async (data: AddUserData) => {
-  await axios.post<User>(`${BASE_URL}/users`, data);
+  const response = await axios.post<User>(`${BASE_URL}/users`, data);
+  return response.data;
 }
 
 export const deleteUserList = async (id: string) => {
@@ -18,5 +19,5 @@ export const deleteUserList = async (id: string) => {
 
 export const updateUserList = async ({ data, id }: { data: EditUserData, id: string }) => {
   const response = await axios.put(`${BASE_URL}/users/${id}`, data);
-  return response;
+  return response.data;
 }
