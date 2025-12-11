@@ -4,6 +4,7 @@ import Modal from "./Modal";
 import { useCreateuser } from "../hooks";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 export default function TanStackAddCurd({ isOpen, onClose }) {
   const schema = z.object({
@@ -41,14 +42,10 @@ export default function TanStackAddCurd({ isOpen, onClose }) {
   const createMutation = useCreateuser();
   const Submit = (data) => {
     const result = schema.safeParse(data);
-    if (!result.success) {
-      const formatted = result.error;
-      console.log(formatted);
+    if (!result.success) {    
+      alert("format is invalid");
     } else {
-      alert("Success!");
-      result.data;
-    }
-    createMutation.mutate(data, {
+      createMutation.mutate(data, {
       onSuccess: () => {
         alert("success");
         reset();
@@ -59,6 +56,8 @@ export default function TanStackAddCurd({ isOpen, onClose }) {
         alert("failed");
       },
     });
+    }
+   
   };
 
   return (

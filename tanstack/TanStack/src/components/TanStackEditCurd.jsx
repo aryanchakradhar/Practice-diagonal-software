@@ -25,7 +25,6 @@ export default function TanStackEditCrud({ isOpen, onClose, editData }) {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
 
@@ -36,21 +35,19 @@ export default function TanStackEditCrud({ isOpen, onClose, editData }) {
       const formatted = result.error;
       console.log(formatted);
     } else {
-      alert("Success!");
-      result.data;
+      updateMutation.mutate(
+        { id: editData.id, data },
+        {
+          onSuccess: () => {
+            alert("success");
+            onClose();
+          },
+          onError: () => {
+            alert("failed");
+          },
+        }
+      );
     }
-    updateMutation.mutate(
-      { id: editData.id, data },
-      {
-        onSuccess: () => {
-          alert("success");
-          onClose();
-        },
-        onError: () => {
-          alert("failed");
-        },
-      }
-    );
   };
 
   useEffect(() => {
