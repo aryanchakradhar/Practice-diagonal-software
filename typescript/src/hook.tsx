@@ -17,7 +17,7 @@ export const useCreateUser = () => {
 };
 
 export const useDeleteUserList = () => {
-  return useMutation<User, Error, User["id"]>({
+  return useMutation<User, Error, string>({
     mutationFn: (id: string) => deleteUserList(id),
   });
 };
