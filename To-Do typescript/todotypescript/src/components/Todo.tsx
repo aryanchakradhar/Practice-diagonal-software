@@ -1,130 +1,97 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-
-type list = {
-  id: number;
-  todo: string;
-  day: string;
-};
+import { Day, type list } from "./type";
+import { RiCalendarTodoFill } from "react-icons/ri";
 
 export default function Todo() {
   const [data, setData] = useState<list[]>([]);
-  const [visibledata, setVisibledata] = useState<list[]>([]);
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<list>({
-    defaultValues: { todo: "", day: "sunday" },
-  });
-  console.log(data);
+  const [selectedDay, setSelectedDay] = useState<Day>(Day.Sunday);
+  const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>(
+    {}
+  );
 
-   useEffect(() => {
-    setVisibledata(data);
-  }, [data]);
+  const { register, handleSubmit, reset } = useForm<list>();
 
   const onSubmit: SubmitHandler<list> = (todo) => {
-    const newTodo = { ...todo, id: data.length };
-    setData((prev) => [...prev, newTodo]);
+    setData((prev) => [
+      ...prev,
+      { ...todo, id: `${Date.now()}`, day: selectedDay },
+    ]);
     reset();
   };
 
+  const visibledata = data.filter((item) => item.day === selectedDay);
 
-  const filterdata = (day: string) => {
-    const filtered = data.filter((item) => item.day === day);
-    setVisibledata(filtered);
-    console.log(filtered);
+  const handleDelete = (id: string) => {
+    setData((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleCheckboxChange = (id: string) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   return (
-    <>
-      <nav className="flex justify-around mt-2">
-        <button
-          className=" border p-3 rounded-2xl"
-          onClick={() => filterdata("sunday")}
-        >
-          Sunday
-        </button>
-        <button
-          className=" border p-3 rounded-2xl"
-          onClick={() => filterdata("monday")}
-        >
-          Monday
-        </button>
-        <button
-          className=" border p-3 rounded-2xl"
-          onClick={() => filterdata("tuesday")}
-        >
-          Tuesday
-        </button>
-        <button
-          className=" border p-3 rounded-2xl"
-          onClick={() => filterdata("wednesday")}
-        >
-          Wednesday
-        </button>
-        <button
-          className=" border p-3 rounded-2xl"
-          onClick={() => filterdata("thursday")}
-        >
-          Thursday
-        </button>
-        <button
-          className=" border p-3 rounded-2xl"
-          onClick={() => filterdata("friday")}
-        >
-          Friday
-        </button>
-        <button
-          className=" border p-3 rounded-2xl"
-          onClick={() => filterdata("saturday")}
-        >
-          Saturday
-        </button>
-      </nav>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className=" mx-100 mt-10">
-          <h1 className="flex justify-center">To do list</h1>
-          <div className="flex justify-center p-2.5">
-            <div className="relative w-full max-w-xl">
-              <input
-                {...register("todo", {
-                  required: { value: true, message: "this is required" },
-                })}
-                placeholder="Add list"
-                className="w-full pr-32 p-2.5 border rounded-2xl"
-              />
+    <div className="container border rounded-2xl mt-5 p-4 mx-auto max-w-200">
+      <div className="flex  justify-around mt-2">
+        {Object.values(Day).map((day) => (
+          <button
+            key={day}
+            className={`border place-items-center gap-1 flex p-3 rounded-2xl ${
+              selectedDay === day ? "bg-[rgb(230,217,203)] text-black" : ""
+            }`}
+            onClick={() => setSelectedDay(day)}
+          >
+            {day}
+            <RiCalendarTodoFill />
+          </button>
+        ))}
+      </div>
 
-              <select
-                className="absolute top-1/2 right-2 -translate-y-1/2 border rounded-xl p-1"
-                {...register("day")}
-              >
-                <option value="sunday">Sunday</option>
-                <option value="monday">Monday</option>
-                <option value="tuesday">Tuesday</option>
-                <option value="wednesday">Wednesday</option>
-                <option value="thursday">Thursday</option>
-                <option value="friday">Friday</option>
-                <option value="saturday">Saturday</option>
-              </select>
-            </div>
-            <button type="submit" className="ml-2 p-2 border rounded-2xl">
-              Add
-            </button>
-            {errors.todo && <p>{errors.todo.message as string}</p>}
-          </div>
-
-          <ul>
-            {visibledata.map((item) => (
-              <li key={item.id}  className="gap-4">
-                <input type="checkbox" />
-                {item.todo}
-              </li>
-            ))}
-          </ul>
-        </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 my-4">
+        <input
+          {...register("todo", { required: true })}
+          placeholder={`Add todo for ${selectedDay}`}
+          className="border p-2 rounded-xl flex-1"
+        />
+        <button
+          type="submit"
+          className="border p-2 rounded-xl bg-green-950 text-white hover:bg-green-900 cursor-pointer"
+        >
+          Add
+        </button>
       </form>
-    </>
+
+      <ul>
+        {visibledata.map((item) => (
+          <li
+            key={item.id}
+            className="flex border items-center bg-[#F3EFEE] hover:bg-gray-100 hover:border gap-3 mb-2 p-2 rounded-2xl "
+          >
+            <input
+              type="checkbox"
+              checked={!!checkedItems[item.id]}
+              onChange={() => handleCheckboxChange(item.id)}
+              className="w-4 h-4 accent-gray-900"
+            />
+            <span
+              className={`flex-1 ${
+                checkedItems[item.id] ? "line-through text-gray-400" : ""
+              }`}
+            >
+              {item.todo}
+            </span>
+            <button
+              onClick={() => handleDelete(item.id)}
+              className="border p-2 rounded-xl bg-red-800 text-white hover:bg-red-700 cursor-pointer"
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
