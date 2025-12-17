@@ -12,3 +12,9 @@ export type list = {
   todo: string;
   day: Day;
 };
+
+export enum filtertype{
+  all = "all",
+  active = "active",
+  completed = "completed",
+}
