@@ -7,8 +7,8 @@ export default function SideBar() {
   const [expanded, setExpanded] = useState<boolean>(true);
   return (
     <div
-      className={`container p-5 text-white min-h-screen bg-[#0E0C29] ${
-        expanded ? "w-1/7" : "w-20  place-items-center"
+      className={`container p-5 text-white min-h-screen w-1/7 bg-[#0E0C29] ${
+        expanded ? "" : "w-20  place-items-center"
       }`}
     >
       <div className="p-5 flex justify-between">
@@ -27,25 +27,56 @@ export default function SideBar() {
 
       <div>
         <div className="flex flex-col">
-          <button className="flex p-3 rounded-lg cursor-pointer place-items-center gap-4 hover:bg-[#44284B] ">
+          <button
+            className={`flex group relative p-3 rounded-lg cursor-pointer place-items-center gap-4 hover:bg-[#44284B]${
+              expanded ? "" : "inline-flex justify-center "
+            }`}
+          >
             <CgProfile />
-            <span
-              className={`overflow-hidden transition-all ${
-                expanded ? "" : "w-0"
-              }`}
-            >
-              Dashboard
-            </span>
+            {expanded && (
+              <span className="overflow-hidden transition-all">Dashboard</span>
+            )}
+            {!expanded && (
+              <span
+                className="
+                      absolute left-full ml-3
+                      whitespace-nowrap
+                      rounded-md bg-black text-white text-sm px-3 py-1
+                      opacity-0 scale-95
+                      pointer-events-none
+                      transition-all duration-200
+                      group-hover:opacity-100 group-hover:scale-100
+                    "
+              >
+                Dashboard
+              </span>
+            )}
           </button>
-          <button className="flex p-3 rounded-lg cursor-pointer place-items-center gap-4 hover:bg-[#44284B]">
+
+          <button
+            className={`group relative flex p-3 rounded-lg cursor-pointer place-items-center gap-4 hover:bg-[#44284B]${
+              expanded ? "" : "inline-flex justify-center "
+            }`}
+          >
             <FaTable />
-            <span
-              className={`overflow-hidden transition-all ${
-                expanded ? "" : "w-0"
-              }`}
-            >
-              Tables
-            </span>
+            {expanded && (
+              <span className="overflow-hidden transition-all">Dashboard</span>
+            )}
+            {!expanded && (
+              <span
+                className="
+                      absolute left-full ml-3
+                      whitespace-nowrap
+                      rounded-md bg-black text-white text-sm px-3 py-1
+                      opacity-0 scale-95
+                      pointer-events-none
+                      transition-all duration-200
+                      group-hover:opacity-100 group-hover:scale-100
+                    "
+              >
+                Tables
+              </span>
+            )}
           </button>
         </div>
       </div>

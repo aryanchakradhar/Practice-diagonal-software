@@ -9,8 +9,8 @@ export default function AdminPage() {
         <button>profile</button>
       </div>
       <div className="flex">
-        <SideBar />
-        <DashboardTemplate />
+        <SideBar/>
+        <DashboardTemplate/>
       </div>
     </div>
   );
