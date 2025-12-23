@@ -18,7 +18,7 @@ const columnHelper = createColumnHelper<ProductList>();
 
 const columns = [
   columnHelper.accessor("customer_name", {
-    header: "Customer_Name",
+    header: "Customer Name",
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("id", {
@@ -26,7 +26,7 @@ const columns = [
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("order_time", {
-    header: "Order_Time",
+    header: "Order Time",
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("price", {
@@ -34,7 +34,7 @@ const columns = [
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("product_name", {
-    header: "Product_Name",
+    header: "Product Name",
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("quantity", {
@@ -86,48 +86,49 @@ export default function Table() {
   });
   return (
     <div className="mt-5 bg-white rounded-3xl shadow-md p-5">
-      <div className="flex justify-between p-3">
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-3 p-3">
         <h1 className="text-bold text-2xl">Recent Orders</h1>
-        <div className="flex place-items-center ">
+        <div className="relative sm:w-64">
           <input
             type="text"
             value={filtering}
             onChange={(e) => setFiltering(e.target.value)}
-            className="border relative rounded-md  pl-1.5 p-1 pr-8 min-w-xl"
+            className="border rounded-md pl-2 pr-8 py-1 w-full"
             placeholder="search..."
           />
-          <FaSearch className="absolute right-15" />
+          <FaSearch className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500" />
         </div>
       </div>
-      <table className="w-full table-fixed">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr
-              key={headerGroup.id}
-              className="sticky top-0 border bg-[#0E0C29] text-white text-m "
-            >
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  className="border p-3.5 relative"
-                  style={{ width: header.column.getSize() }}
-                >
-                  <div className="flex items-center justify-between cursor-pointer select-none">
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    {{
-                      asc: <FaArrowUp />,
-                      desc: <FaArrowDown />,
-                    }[header.column.getIsSorted() as string] ?? null}
-                  </div>
-                  {header.column.getCanResize() && (
-                    <div
-                      onMouseDown={header.getResizeHandler()}
-                      onTouchStart={header.getResizeHandler()}
-                      className={`
+      <div className="w-full overflow-x-auto">
+        <table className="min-w-[1000px] w-full border-collapse">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr
+                key={headerGroup.id}
+                className="sticky top-0 border bg-[#0E0C29] text-white text-m "
+              >
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                    className="border p-3.5 relative"
+                    style={{ width: header.column.getSize() }}
+                  >
+                    <div className="flex items-center justify-between cursor-pointer select-none">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {{
+                        asc: <FaArrowUp />,
+                        desc: <FaArrowDown />,
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </div>
+                    {header.column.getCanResize() && (
+                      <div
+                        onMouseDown={header.getResizeHandler()}
+                        onTouchStart={header.getResizeHandler()}
+                        className={`
                           absolute right-0 top-0 h-full w-1.5
                           cursor-col-resize
                           touch-none select-none
@@ -135,30 +136,31 @@ export default function Table() {
                           hover:bg-white/40
                           ${header.column.getIsResizing() ? "bg-white" : ""}
                       `}
-                    />
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="odd:bg-gray-200 even:bg-white">
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className="border p-2"
-                  style={{ width: cell.column.getSize() }}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="mt-5 flex justify-center gap-3">
+                      />
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="odd:bg-gray-200 even:bg-white">
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className="border p-2"
+                    style={{ width: cell.column.getSize() }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="mt-5 flex flex-wrap justify-center gap-3">
         <button
           onClick={() => table.setPageIndex(0)}
           className="px-3 py-1.5 border rounded-2xl bg-[#0E0C29] text-white hover:bg-[#44284B] cursor-pointer"

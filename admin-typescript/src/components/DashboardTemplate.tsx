@@ -1,25 +1,48 @@
+import { GiReceiveMoney } from "react-icons/gi";
+import { obj } from "../constant";
 import { useGetProducts } from "../hook";
+import Table from "./Table";
+import { HiReceiptRefund } from "react-icons/hi";
+import { BsCurrencyExchange } from "react-icons/bs";
+import { FaMoneyBillTrendUp } from "react-icons/fa6";
 
 export default function DashboardTemplate() {
-  const {data} = useGetProducts();
+  const { data } = useGetProducts();
   console.log(data);
   return (
-    <div className=" bg-[#F0F1F9]  p-5  flex-1 min-h-screen">
-      <div className="p-5 text-2xl">E-commerce Dashboard Template</div>
-      <div className="flex justify-between">
-        <div className="bg-white shadow-md min-w-90 min-h-60">
-          <h4 className="pt-5 pl-5 text-gray-500 font-medium">Total Revenue</h4>
+    <div className=" bg-[#F0F1F9] p-5">
+      <div className="text-xl sm:text-2xl font-medium mb-4">
+        E-commerce Dashboard Template
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 my-5">
+        <div className="bg-white pt-5 px-5 rounded-3xl shadow-md  min-h-60">
+          <h4 className=" text-gray-500 font-medium flex place-items-center justify-between">
+            Total Revenue <FaMoneyBillTrendUp className="text-3xl" />
+          </h4>
+          <h1 className="my-2 font-bold text-5xl">{obj.total_revenue}</h1>
         </div>
-         <div className="bg-white shadow-md min-w-90 ">
-          <h4 className="pt-5 pl-5 text-gray-500 font-medium">Affiliate Revenue</h4>
+        <div className="bg-white pt-5 px-5 rounded-3xl shadow-md  min-h-60">
+          <h4 className=" text-gray-500 font-medium flex place-items-center justify-between">
+            Affiliate Revenue <BsCurrencyExchange className="text-3xl" />
+          </h4>
+          <h1 className="my-2 font-bold text-5xl">{obj.affiliate_revenue}</h1>
         </div>
-         <div className="bg-white shadow-md min-w-90 ">
-          <h4 className="pt-5 pl-5 text-gray-500 font-medium">Refunds</h4>
+        <div className="bg-white pt-5 px-5 rounded-3xl shadow-md  min-h-60">
+          <h4 className=" text-gray-500 font-medium flex place-items-center justify-between">
+            Refunds <HiReceiptRefund className="text-3xl" />
+          </h4>
+          <h1 className="my-2 font-bold text-5xl">{obj.refunds}</h1>
         </div>
-         <div className="bg-white shadow-md min-w-90 ">
-          <h4 className="pt-5 pl-5 text-gray-500 font-medium">Avg. Revenue Per User</h4>
+        <div className="bg-white pt-5 px-5 rounded-3xl shadow-md  min-h-60">
+          <h4 className=" text-gray-500 font-medium flex place-items-center justify-between">
+            Avg. Revenue Per User <GiReceiveMoney className="text-3xl" />
+          </h4>
+          <h1 className="my-2 font-bold text-5xl">
+            {obj.avg_revenue_per_user}
+          </h1>
         </div>
       </div>
+      <Table />
     </div>
   );
 }
