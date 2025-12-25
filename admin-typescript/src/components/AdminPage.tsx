@@ -13,9 +13,7 @@ export default function AdminPage() {
       console.log(78);
       setExpanded(window.innerWidth >= 1024);
     }, 200);
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };

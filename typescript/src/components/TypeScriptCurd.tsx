@@ -7,6 +7,7 @@ import EditButton from "./EditButton";
 
 export default function TypeScriptCurd() {
   const { data, isLoading } = useGetUserList();
+  console.log(typeof data, data);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>();
@@ -57,13 +58,16 @@ export default function TypeScriptCurd() {
 
         {data &&
           data.map((item) => {
+            const addresses = Object.values(item.address);
             return (
-              <tr className="border w-100 odd:bg-gray-300 even:bg-white">
+              <tr key={item.id} className="border w-100 odd:bg-gray-300 even:bg-white">
                 <td className=" border  w-1/4 truncate overflow-hidden whitespace-nowrap">
                   {item.name}
                 </td>
-                <td className=" border w-1/4 truncate overflow-hidden whitespace-nowrap">
-                  {item.address}
+                <td className=" border w-1/4  whitespace-wrap">
+                  {addresses.map((address, index) => {
+                  return <span key={index}>{address.address1} {index < addresses.length - 1 ? ", " : ""}</span>;
+                  })}
                 </td>
                 <td className=" border w-1/4 truncate overflow-hidden whitespace-nowrap">
                   {item.gmail}

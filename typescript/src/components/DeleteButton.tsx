@@ -1,3 +1,4 @@
+import { FaTrash } from "react-icons/fa";
 import { useDeleteUserList } from "../hook";
 import { queryClient } from "../queryClientProvider";
 import Modal from "./Modal";
@@ -36,7 +37,7 @@ export default function DeleteButton({ isOpen, onClose, id }: DeleteButtonProps)
           onClick={handleDelete}
           disabled={deleteMutation.isPending}
         >
-          Delete
+          <FaTrash />
         </button>
         <button
           onClick={onClose}
